@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit to Google Sheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #fbb115;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #fbb115;
+    }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: center;">
+        <img src="https://vipstech.in/asset/image/VIPS.Tech.svg" alt="VIPS.Tech Logo" style="max-width: 200px; margin-bottom: 15px;" />
+      </div>
+  <center><h2>Attendance</h2></center>
+  <form id="sheetForm">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="department">Department:</label>
+      <input type="text" id="department" name="department" required />
+    </div>
+
+    <div class="form-group">
+      <label for="domain">Domain:</label>
+      <select id="domain" name="domain" required>
+        <option value="">-- Select a Domain --</option>
+        <option value="AI/ML">AI/ML</option>
+        <option value="Data Science">Data Science / Analytics</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Ui/Ux">Ui/Ux</option>
+        <option value="Cloud Computing">Cloud Computing</option>
+        <option value="Ethicalhacking">Ethical Hacking</option>
+        <option value="FullStackPython">Full Stack</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+        <label for="workdone">Work Done:</label>
+        <input type="text" id="workdone" name="workdone" required />
+    </div>
+
+    <button type="submit">Submit</button>
+    <div class="message" id="responseMessage"></div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('sheetForm');
+  const message = document.getElementById('responseMessage');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = {
+        name: formData.get('name'),
+        department: formData.get('department'),
+        domain: formData.get('domain'),
+        workdone: formData.get('workdone')
+    };
+
+    fetch('https://script.google.com/macros/s/AKfycbzBZksaABzbtdmReAveEa4CiEKxSCWvJgaKpZ5Y8xDZwBqZWr4Y79gk4DkspTcw975a/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    form.reset();
+    message.textContent = "Submitted successfully!";
+    setTimeout(() => message.textContent = "", 3000);
+  });
+</script>
+
+</body>
+</html>
